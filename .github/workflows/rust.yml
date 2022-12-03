@@ -15,28 +15,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Rust Release binary
+    - name: Rust Release binary windows
       # You may pin to the exact commit or the version.
       # uses: rust-build/rust-build.action@6726f3b5a7bd3a686ced9e2359ae0d8554c54659
       uses: rust-build/rust-build.action@v1.4.0
       with:
         # Output target
-        RUSTTARGET: ${{[x86_64-pc-windows-gnu, x86_64-unknown-linux-musl, x86_64-apple-darwin]}}
-        # List of extra files to include in build
-        # EXTRA_FILES: # optional
-        # Path to directory containing Cargo.toml (defaults to project root)
-        # SRC_DIR: # optional
-        # List of archive types to publish the binaries with, default "zip", supports zip and all tar formats
-        # ARCHIVE_TYPES: # optional
-        # Full name of archive to upload (you must specify file extension and change this if building multiple targets)
-        # ARCHIVE_NAME: # optional
-        # Relative path of script to run before building
-        # PRE_BUILD: # optional
-        # Relative path of script to run after building
-        # POST_BUILD: # optional
-        # If set to "true", the resulting binary will be stripped and compressed by UPX. ("false" by default)
-        # MINIFY: # optional
-        # The rust toolchain version to use (see https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification)
-        # TOOLCHAIN_VERSION: # optional
-        # What method to use to upload compiled binaries, supported values: (release, none), default: release
-        # UPLOAD_MODE: # optional
+        RUSTTARGET: "x86_64-pc-windows-gnu"
+    - name: Rust Release binary linux
+      uses: rust-build/rust-build.action@v1.4.0
+      with:
+        # Output target
+        RUSTTARGET: "x86_64-unknown-linux-musl"
+    - name: Rust Release binary mac
+      uses: rust-build/rust-build.action@v1.4.0
+      with:
+        # Output target
+        RUSTTARGET: "x86_64-apple-darwin"
