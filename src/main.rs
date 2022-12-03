@@ -11,11 +11,10 @@ fn main() {
         match io::stdin().read_line(&mut guessed) {
             Ok(_n) => {
                 num = guessed.trim().parse::<u32>().unwrap();
-                println!("{num} {goal_num}");
                 if goal_num < num {
-                    println!("higher")
-                } else {
-                    println!("lower")
+                    println!("you guessed higher than target")
+                } else if goal_num > num {
+                    println!("you guessed lower than target")
                 }
                 guessed = String::new();
             }
