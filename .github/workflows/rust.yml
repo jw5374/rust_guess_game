@@ -6,29 +6,24 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  CARGO_TERM_COLOR: always
-
 jobs:
-  build:
-
+  release:
+    name: release ${{ matrix.target }}
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-pc-windows-gnu
+            archive: zip
+          - target: x86_64-unknown-linux-musl
+            archive: tar.gz tar.xz tar.zst
+          - target: x86_64-apple-darwin
+            archive: zip
     steps:
-    - name: Rust Release binary windows
-      # You may pin to the exact commit or the version.
-      # uses: rust-build/rust-build.action@6726f3b5a7bd3a686ced9e2359ae0d8554c54659
-      uses: rust-build/rust-build.action@v1.4.0
-      with:
-        # Output target
-        RUSTTARGET: "x86_64-pc-windows-gnu"
-    - name: Rust Release binary linux
-      uses: rust-build/rust-build.action@v1.4.0
-      with:
-        # Output target
-        RUSTTARGET: "x86_64-unknown-linux-musl"
-    - name: Rust Release binary mac
-      uses: rust-build/rust-build.action@v1.4.0
-      with:
-        # Output target
-        RUSTTARGET: "x86_64-apple-darwin"
+      - uses: actions/checkout@master
+      - name: Compile and release
+        uses: rust-build/rust-build.action@v1.4.0
+        with:
+          RUSTTARGET: ${{ matrix.target }}
+          ARCHIVE_TYPES: ${{ matrix.archive }}
